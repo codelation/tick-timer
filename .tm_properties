@@ -1,3 +1,4 @@
+includeFiles = "{$includeFiles,.gitignore}"
 excludeInFolderSearch = "{$excludeInFolderSearch,build,vendor}"
 
 softTabs = true
