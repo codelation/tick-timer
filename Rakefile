@@ -11,6 +11,7 @@ end
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = "Tick Timer"
+  app.icon = "icon.icns"
   app.identifier = "com.81designs.ticktimer"
   app.info_plist["LSUIElement"] = true
   app.info_plist["NSHumanReadableCopyright"] = "Copyright © 2014 81designs. All rights reserved."
