@@ -15,9 +15,7 @@ module Tick
       promise = Loco::Promise.new
     
       AFMotion::XML.post(url, params) do |result|
-        error = Pointer.new(:object)
-        xml = XMLReader.dictionaryForXMLString(result.body, error:error)
-        promise.resolve(xml)
+        promise.resolve(result)
       end
     
       promise
