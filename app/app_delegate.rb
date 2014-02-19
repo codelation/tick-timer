@@ -3,9 +3,6 @@ class AppDelegate
 
   def applicationDidFinishLaunching(notification)
     status_item.setMenu(main_menu)
-    Tick.login("81designs", "brian@81designs.com", "fKR4Ukwa6cAmXyuivXVj") do
-      build_main_menu
-    end
   end
   
   def build_main_menu
