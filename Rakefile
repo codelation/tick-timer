@@ -10,7 +10,7 @@ end
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
-  app.name = "Tick Timer"
+  app.name = "Timer for Tick"
   app.icon = "icon.icns"
   app.identifier = "com.81designs.ticktimer"
   app.info_plist["LSUIElement"] = true
