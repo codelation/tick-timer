@@ -16,7 +16,7 @@ PODS:
   - AFNetworking/Security (2.0.3)
   - AFNetworking/Serialization (2.0.3)
   - GDataXML-HTML (1.1.0)
-  - SSKeychain (1.2.1)
+  - SSKeychain (1.2.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.0.1)
@@ -24,8 +24,8 @@ DEPENDENCIES:
   - SSKeychain (~> 1.2.1)
 
 SPEC CHECKSUMS:
-  AFNetworking: e499052cbf3d743e9bb727bb37adb9dc2547ba15
-  GDataXML-HTML: 281ea772a286241f860fa152cff5c7a7cd817336
-  SSKeychain: d18926838c2e7cd342e2a49e9f869858e49f035a
+  AFNetworking: a4d0e9a64de9242986620dafd1b3cee3b413ac5c
+  GDataXML-HTML: 3f6537789b55edbc4d83283566f9779abd9680bc
+  SSKeychain: cc48bd3ad24fcd9125adb9e0d23dd50b8bbd08b9
 
-COCOAPODS: 0.29.0
+COCOAPODS: 0.33.1

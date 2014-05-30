@@ -1,84 +1,133 @@
-class MainMenu < NSMenu
-  attr_reader :about_menu_item, :login_menu_item, :logout_menu_item, 
-              :quit_menu_item, :running_timer_menu_items, :start_timer_menu_item
+class MainMenu < MenuMotion::Menu
+  attr_accessor :projects
+
+  def init
+    build_menu
+    self
+  end
+
+  def build_logged_in_menu
+    sections = []
+
+    # Build the rows for running timers
+    unless timer_rows.empty?
+      sections << {
+        rows: timer_rows
+      }
+    end
+
+    # Build row for Start Timer submenu
+    sections << {
+      rows: [{
+        title: "Start Timer",
+        rows: project_rows
+      }]
+    }
+
+    # Build action rows
+    sections << {
+      rows: [{
+        title: "About Timer for Tick",
+        action: "orderFrontStandardAboutPanel:"
+      }, {
+        title: "Log Out",
+        target: self,
+        action: "log_out"
+      }, {
+        title: "Quit",
+        action: "terminate:"
+      }]
+    }
+
+    # Finally, build out the menu
+    build_menu_from_params(self, { sections: sections })
+  end
+
+  def build_logged_out_menu
+    params = {
+      sections: [{
+        rows: [{
+          title: "Log In",
+          target: self,
+          action: "show_login_window"
+        }]
+      }, {
+        rows: [{
+          title: "About Timer for Tick",
+          action: "orderFrontStandardAboutPanel:"
+        }, {
+          title: "Quit",
+          action: "terminate:"
+        }]
+      }]
+    }
+    build_menu_from_params(self, params)
+  end
 
   def build_menu
     self.removeAllItems
-  
-    @app_name = NSBundle.mainBundle.infoDictionary["CFBundleDisplayName"]
-  
     if Tick.logged_in?
-      # Project - Task - 00:00 >
-      add_running_timer_menu_items
-      # Start Timer >
-      self.addItem(start_timer_menu_item)
+      Tick::Project.list do |projects|
+        self.projects = projects
+        build_logged_in_menu
+      end
     else
-      # Log In
-      self.addItem(login_menu_item)
-    end
-  
-    # ----------
-    self.addItem(NSMenuItem.separatorItem)
-  
-    # About Timer for Tick
-    self.addItem(about_menu_item)
-  
-    if Tick.logged_in?
-      # Log Out
-      self.addItem(logout_menu_item)
-    end
-  
-    # Quit
-    self.addItem(quit_menu_item)
-  end
-
-  def about_menu_item
-    @about_menu_item ||= NSMenuItem.alloc.initWithTitle("About #{@app_name}", action:"orderFrontStandardAboutPanel:", keyEquivalent:"")
-  end
-
-  def login_menu_item
-    @login_menu_item ||= begin
-      login_menu_item = NSMenuItem.alloc.initWithTitle("Log In", action:"show_login_window", keyEquivalent:"")
-      login_menu_item.target = self
-      login_menu_item
+      build_logged_out_menu
     end
   end
 
-  def logout_menu_item
-    @logout_menu_item ||= begin
-      logout_menu_item = NSMenuItem.alloc.initWithTitle("Log Out", action:"log_out", keyEquivalent:"")
-      logout_menu_item.target = Tick
-      logout_menu_item
-    end
+  def log_out
+    Tick.log_out
+    build_menu
   end
 
-  def quit_menu_item
-    @quit_menu_item ||= NSMenuItem.alloc.initWithTitle("Quit", action:"terminate:", keyEquivalent:"")
-  end
-
-  def running_timer_menu_items
-    started_timers = Tick::Timer.list
-    started_timers.sort_by{|timer|
-      [timer.task.project.name, timer.task.name]
-    }.map{|timer|
-      Timer::MenuItem.alloc.initWithTimer(timer)
+  def project_rows
+    self.projects.map{|project|
+      {
+        title: project.name,
+        rows: project.tasks.map{|task|
+          {
+            title: task.name,
+            object: task,
+            tag: "task_#{task.id}",
+            target: self,
+            action: "start_timer:"
+          }
+        }
+      }
     }
   end
 
   def show_login_window
-  
+    @login_window = LoginWindow.alloc.initWithContentRect([[0, 0], [300, 180]],
+                      styleMask: NSTitledWindowMask|NSClosableWindowMask,
+                      backing: NSBackingStoreBuffered,
+                      defer: false)
   end
 
-  def start_timer_menu_item
-    @start_timer_menu_item ||= StartTimer::MenuItem.alloc.initWithTitle("Start Timer", action:nil, keyEquivalent:"")
+  def start_timer(menu_item)
+    task = menu_item.object
+
+    ap "Start Timer: #{task.project.name}"
+
+    timer = Tick::Timer.start_with_task(task)
+    build_menu
   end
 
-private
-
-  def add_running_timer_menu_items
-    running_timer_menu_items.each do |menu_item|
-      self.addItem(menu_item)
-    end
+  def timer_rows
+    Tick::Timer.list.map{|timer|
+      title = timer.task.project.name + " - "
+      title += timer.task.name + " - "
+      title += timer.paused? ? "Paused" : timer.displayed_time
+      {
+        title: title,
+        rows: [{
+          title: timer.paused? ? "Pause" : "Resume"
+        }, {
+          title: "Submit"
+        }]
+      }
+    }
   end
 
 end
