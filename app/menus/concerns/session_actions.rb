@@ -10,6 +10,7 @@ module SessionActions
                       styleMask: NSTitledWindowMask|NSClosableWindowMask,
                       backing: NSBackingStoreBuffered,
                       defer: false)
+    @login_window.delegate = self
   end
 
 end

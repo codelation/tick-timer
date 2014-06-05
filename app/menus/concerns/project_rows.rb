@@ -21,6 +21,7 @@ module ProjectRows
   def start_timer(menu_item)
     task = menu_item.object
     timer = Tick::Timer.start_with_task(task)
+    build_menu
   end
 
 end

@@ -3,6 +3,7 @@ module TimerRows
   def clear_timer(menu_item)
     timer = menu_item.object
     timer.clear
+    build_menu
   end
 
   def timer_rows
@@ -42,6 +43,7 @@ module TimerRows
   def submit_timer(menu_item)
     timer = menu_item.object
     timer.submit!
+    build_menu
   end
 
   def toggle_timer(menu_item)
@@ -51,7 +53,6 @@ module TimerRows
     else
       timer.start
     end
-    # TODO: Use KVO for monitoring timer running/paused
     build_menu
   end
 

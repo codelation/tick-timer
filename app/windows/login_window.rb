@@ -1,4 +1,5 @@
 class LoginWindow < NSWindow
+  attr_accessor :delegate
 
   def bring_to_front
     self.orderFrontRegardless
@@ -12,7 +13,7 @@ class LoginWindow < NSWindow
     self.contentView = @layout.view
 
     @layout.login_button.target = self
-    @layout.login_button.action = "login"
+    @layout.login_button.action = "log_in"
   end
 
   def initWithContentRect(rect, styleMask:styleMask, backing:backing, defer:defer)
@@ -23,14 +24,16 @@ class LoginWindow < NSWindow
     self
   end
 
-  def login
+  def log_in
     company = @layout.company_field.stringValue
     email = @layout.email_field.stringValue
     password = @layout.password_field.stringValue
     Tick.log_in(company, email, password) do |session|
       if session
+        self.delegate.build_menu
         self.close
       else
+        # TODO: Present message to user
         ap "Could not log in"
       end
     end

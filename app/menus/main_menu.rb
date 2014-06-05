@@ -1,12 +1,10 @@
 class MainMenu < MenuMotion::Menu
-  include BW::KVO
   include ProjectRows
   include SessionActions
   include TimerRows
 
   def init
     build_menu
-    setup_observers
     self
   end
 
@@ -78,12 +76,7 @@ class MainMenu < MenuMotion::Menu
     else
       build_logged_out_menu
     end
-  end
-
-  def setup_observers
-    observe(Tick::Timer, :timers) do |old_value, new_value|
-      build_menu
-    end
+    NSApplication.sharedApplication.delegate.update_status_item
   end
 
 end

@@ -5,9 +5,6 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     awesome_print_motion (0.1.0)
-    bubble-wrap (1.6.0)
-      bubble-wrap-http (= 1.6.0)
-    bubble-wrap-http (1.6.0)
     claide (0.6.1)
     cocoapods (0.33.1)
       activesupport (>= 3.2.15, < 4)
@@ -62,7 +59,6 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print_motion
-  bubble-wrap
   menu-motion
   motion-kit
   motion-tickspot

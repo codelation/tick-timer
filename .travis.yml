@@ -1,10 +1,9 @@
 language: objective-c
 before_install:
     - (ruby --version)
+    - sudo chown -R travis ~/Library/RubyMotion
     - mkdir -p ~/Library/RubyMotion/build
     - sudo motion update
 script: ./travis.sh
 notifications:
   email: false
-  webhooks: 
-    secure: "tmjPOy87oMb0m4VTKmBrcxKLwkMmz2gdLy9PWfN+s4b+mnAYE5JFyJq9MjRIVQYfGwp3rQ8lEJv7kpddDcQ1FgIMUu50LHnMdEgNV/52ggXC5OwPiGAPAd4UWAqPyTe7HZpywBC8ZTO79aYV65EGQQW5xzBEm3u9kd/Zai2YSlQ="
