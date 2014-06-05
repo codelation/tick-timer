@@ -1,8 +1,12 @@
 class MainMenu < MenuMotion::Menu
-  attr_accessor :projects
+  include BW::KVO
+  include ProjectRows
+  include SessionActions
+  include TimerRows
 
   def init
     build_menu
+    setup_observers
     self
   end
 
@@ -49,7 +53,7 @@ class MainMenu < MenuMotion::Menu
         rows: [{
           title: "Log In",
           target: self,
-          action: "show_login_window"
+          action: "log_in"
         }]
       }, {
         rows: [{
@@ -76,58 +80,10 @@ class MainMenu < MenuMotion::Menu
     end
   end
 
-  def log_out
-    Tick.log_out
-    build_menu
-  end
-
-  def project_rows
-    self.projects.map{|project|
-      {
-        title: project.name,
-        rows: project.tasks.map{|task|
-          {
-            title: task.name,
-            object: task,
-            tag: "task_#{task.id}",
-            target: self,
-            action: "start_timer:"
-          }
-        }
-      }
-    }
-  end
-
-  def show_login_window
-    @login_window = LoginWindow.alloc.initWithContentRect([[0, 0], [300, 180]],
-                      styleMask: NSTitledWindowMask|NSClosableWindowMask,
-                      backing: NSBackingStoreBuffered,
-                      defer: false)
-  end
-
-  def start_timer(menu_item)
-    task = menu_item.object
-
-    ap "Start Timer: #{task.project.name}"
-
-    timer = Tick::Timer.start_with_task(task)
-    build_menu
-  end
-
-  def timer_rows
-    Tick::Timer.list.map{|timer|
-      title = timer.task.project.name + " - "
-      title += timer.task.name + " - "
-      title += timer.paused? ? "Paused" : timer.displayed_time
-      {
-        title: title,
-        rows: [{
-          title: timer.paused? ? "Pause" : "Resume"
-        }, {
-          title: "Submit"
-        }]
-      }
-    }
+  def setup_observers
+    observe(Tick::Timer, :timers) do |old_value, new_value|
+      build_menu
+    end
   end
 
 end
