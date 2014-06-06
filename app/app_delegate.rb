@@ -1,5 +1,4 @@
 class AppDelegate
-  attr_reader :main_menu, :status_item
 
   def applicationDidFinishLaunching(notification)
     status_item.setMenu(main_menu)

@@ -11,12 +11,6 @@ class LoginLayout < MotionKit::Layout
   view :cancel_button
   view :login_button
 
-  HORIZONTAL_MARGIN = 5
-  LABEL_HEIGHT      = 20
-  LABEL_WIDTH       = 75
-  TEXT_FIELD_HEIGHT = 23
-  VERTICAL_MARGIN   = 32
-
   def layout
     add NSTextView,  :company_label
     add NSTextField, :company_field
@@ -24,11 +18,11 @@ class LoginLayout < MotionKit::Layout
     add NSTextView,  :email_label
     add NSTextField, :email_field
 
-    add NSTextView,  :password_label
-    add NSTextField, :password_field
+    add NSTextView,        :password_label
+    add NSSecureTextField, :password_field
 
-    add NSButton,    :cancel_button
-    add NSButton,    :login_button
+    add NSButton, :cancel_button
+    add NSButton, :login_button
   end
 
   def company_label_style
@@ -39,18 +33,18 @@ class LoginLayout < MotionKit::Layout
 
     constraints do
       left.equals(10)
-      height.equals(LABEL_HEIGHT)
+      height.equals(20)
       top.equals(20)
-      width.equals(LABEL_WIDTH)
+      width.equals(75)
     end
   end
 
   def company_field_style
     constraints do
-      left.equals(:company_label).plus(LABEL_WIDTH + HORIZONTAL_MARGIN)
-      height.equals(TEXT_FIELD_HEIGHT)
+      left.equals(:company_label).plus(80)
+      height.equals(23)
       right.equals(-10)
-      top.equals(:company_label).minus(TEXT_FIELD_HEIGHT - LABEL_HEIGHT)
+      top.equals(:company_label).minus(43)
     end
   end
 
@@ -63,7 +57,7 @@ class LoginLayout < MotionKit::Layout
     constraints do
       left.equals(:company_label)
       height.equals(:company_label)
-      top.equals(:company_label).plus(VERTICAL_MARGIN)
+      top.equals(:company_label).plus(32)
       width.equals(:company_label)
     end
   end
@@ -73,7 +67,7 @@ class LoginLayout < MotionKit::Layout
       left.equals(:company_field)
       height.equals(:company_field)
       right.equals(:company_field)
-      top.equals(:email_label).minus(TEXT_FIELD_HEIGHT - LABEL_HEIGHT)
+      top.equals(:email_label).minus(43)
     end
   end
 
@@ -86,7 +80,7 @@ class LoginLayout < MotionKit::Layout
     constraints do
       left.equals(:email_label)
       height.equals(:email_label)
-      top.equals(:email_label).plus(VERTICAL_MARGIN)
+      top.equals(:email_label).plus(32)
       width.equals(:email_label)
     end
   end
@@ -96,7 +90,7 @@ class LoginLayout < MotionKit::Layout
       left.equals(:email_field)
       height.equals(:email_field)
       right.equals(:email_field)
-      top.equals(:password_label).minus(TEXT_FIELD_HEIGHT - LABEL_HEIGHT)
+      top.equals(:password_label).minus(43)
     end
   end
 
@@ -107,7 +101,7 @@ class LoginLayout < MotionKit::Layout
     constraints do
       left.equals(:password_field)
       height.equals(30)
-      top.equals(:password_field).plus(VERTICAL_MARGIN)
+      top.equals(:password_field).plus(32)
       width.equals(90)
     end
   end
@@ -119,7 +113,7 @@ class LoginLayout < MotionKit::Layout
     constraints do
       height.equals(:cancel_button)
       right.equals(:password_field)
-      top.equals(:password_field).plus(VERTICAL_MARGIN)
+      top.equals(:password_field).plus(32)
       width.equals(:cancel_button)
     end
   end

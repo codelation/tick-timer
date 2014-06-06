@@ -1,5 +1,5 @@
-class LoginWindow < NSWindow
-  attr_accessor :delegate
+class SubmitWindow < NSWindow
+  attr_accessor :delegate, :timer
 
   def bring_to_front
     self.orderFrontRegardless
@@ -9,11 +9,11 @@ class LoginWindow < NSWindow
 
   def build_window
     # YAY MotionKit!!
-    @layout = LoginLayout.new
+    @layout = SubmitLayout.new
     self.contentView = @layout.view
 
-    @layout.login_button.target = self
-    @layout.login_button.action = "log_in"
+    @layout.submit_button.target = self
+    @layout.submit_button.action = "submit"
   end
 
   def initWithContentRect(rect, styleMask: styleMask, backing: backing, defer: defer)
@@ -24,24 +24,24 @@ class LoginWindow < NSWindow
     self
   end
 
-  def log_in
-    company = @layout.company_field.stringValue
-    email = @layout.email_field.stringValue
-    password = @layout.password_field.stringValue
-    Tick.log_in(company, email, password) do |session|
-      if session
-        self.delegate.successful_login
-        self.close
-      else
-        # TODO: Present message to user
-        ap "Could not log in"
-      end
+  def submit
+    self.timer.submit!({
+      hours: @layout.hours_field.floatValue,
+      notes: @layout.notes_field.stringValue
+    }) do
+      self.delegate.successful_submission
+      self.close
     end
   end
 
   def set_title_and_frame
     self.title = "Log in to Tick"
     self.setFrame([[(self.screen.frame.size.width / 2) - 150, (self.screen.frame.size.height / 2)], [300, 180]], display:true)
+  end
+
+  def timer=(timer)
+    @layout.hours_field.floatValue = timer.time_elapsed_in_hours
+    super
   end
 
 end

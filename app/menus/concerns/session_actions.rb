@@ -13,4 +13,8 @@ module SessionActions
     @login_window.delegate = self
   end
 
+  def successful_login
+    build_menu
+  end
+
 end

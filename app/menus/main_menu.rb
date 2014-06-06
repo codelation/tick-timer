@@ -4,7 +4,7 @@ class MainMenu < MenuMotion::Menu
   include TimerRows
 
   def init
-    build_menu
+    start_update_timer
     self
   end
 
@@ -69,14 +69,28 @@ class MainMenu < MenuMotion::Menu
   def build_menu
     self.removeAllItems
     if Tick.logged_in?
-      Tick::Project.list do |projects|
-        self.projects = projects
+      if self.projects
         build_logged_in_menu
+      else
+        Tick::Project.list do |projects|
+          self.projects = projects.select{|project|
+            !project.closed_on
+          }.sort_by{|project|
+            project.name.downcase
+          }
+          build_logged_in_menu
+        end
       end
     else
       build_logged_out_menu
     end
     NSApplication.sharedApplication.delegate.update_status_item
+  end
+
+  def start_update_timer
+    @update_timer = NSTimer.scheduledTimerWithTimeInterval(10, target:self, selector: "build_menu", userInfo: nil, repeats: true)
+    @update_timer.setTolerance(10)
+    @update_timer.fire
   end
 
 end
