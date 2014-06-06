@@ -1,4 +1,5 @@
 class SubmitWindowController < NSWindowController
+  attr_accessor :timer
 
   def init
     super
@@ -15,8 +16,8 @@ class SubmitWindowController < NSWindowController
 
   def submit_timer
     self.timer.submit!({
-      hours: @layout.hours_field.floatValue,
-      notes: @layout.notes_field.stringValue
+      hours: self.window.hours_field.floatValue,
+      notes: self.window.notes_field.stringValue
     }) do
       self.main_menu.successful_submission
       self.close
@@ -24,6 +25,7 @@ class SubmitWindowController < NSWindowController
   end
 
   def timer=(timer)
+    super
     self.window.title = "#{timer.task.project.name} - #{timer.task.name}"
     self.window.hours_field.floatValue = timer.time_elapsed_in_hours
   end

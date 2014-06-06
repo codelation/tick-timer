@@ -1,5 +1,5 @@
 class SubmitWindow < NSWindow
-  attr_reader :hours_field
+  attr_reader :hours_field, :notes_field
 
   def build_window
     # YAY MotionKit!!
@@ -22,6 +22,10 @@ class SubmitWindow < NSWindow
     build_window
     set_frame
     self
+  end
+
+  def notes_field
+    @layout.notes_field
   end
 
   def set_frame
