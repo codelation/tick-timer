@@ -59,7 +59,7 @@ class SubmitLayout < MotionKit::Layout
   def notes_field_style
     constraints do
       left.equals(:hours_field)
-      height.equals(46)
+      height.equals(56)
       right.equals(:hours_field)
       top.equals(:notes_label).minus(3)
     end
@@ -72,7 +72,7 @@ class SubmitLayout < MotionKit::Layout
     constraints do
       left.equals(:notes_field)
       height.equals(30)
-      top.equals(:notes_field).plus(55)
+      top.equals(:notes_field).plus(65)
       width.equals(90)
     end
   end

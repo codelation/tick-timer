@@ -5,6 +5,7 @@ class MainMenu < MenuMotion::Menu
 
   def init
     start_update_timer
+    self.delegate = self
     self
   end
 

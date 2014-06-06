@@ -6,11 +6,8 @@ module SessionActions
   end
 
   def log_in
-    @login_window = LoginWindow.alloc.initWithContentRect([[0, 0], [300, 180]],
-                      styleMask: NSTitledWindowMask|NSClosableWindowMask,
-                      backing: NSBackingStoreBuffered,
-                      defer: false)
-    @login_window.delegate = self
+    @login_window ||= LoginWindowController.new
+    @login_window.showWindow(self)
   end
 
   def successful_login

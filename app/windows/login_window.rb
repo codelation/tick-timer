@@ -1,9 +1,8 @@
 class LoginWindow < NSWindow
-  attr_accessor :delegate
+  attr_reader :company_field, :email_field, :password_field
 
   def bring_to_front
     self.orderFrontRegardless
-    self.makeMainWindow
     NSApp.activateIgnoringOtherApps(true)
   end
 
@@ -12,8 +11,19 @@ class LoginWindow < NSWindow
     @layout = LoginLayout.new
     self.contentView = @layout.view
 
-    @layout.login_button.target = self
-    @layout.login_button.action = "log_in"
+    @layout.cancel_button.target = self
+    @layout.cancel_button.action = :close
+
+    @layout.login_button.target = self.windowController
+    @layout.login_button.action = :log_in
+  end
+
+  def company_field
+    @layout.company_field
+  end
+
+  def email_field
+    @layout.email_field
   end
 
   def initWithContentRect(rect, styleMask: styleMask, backing: backing, defer: defer)
@@ -24,19 +34,8 @@ class LoginWindow < NSWindow
     self
   end
 
-  def log_in
-    company = @layout.company_field.stringValue
-    email = @layout.email_field.stringValue
-    password = @layout.password_field.stringValue
-    Tick.log_in(company, email, password) do |session|
-      if session
-        self.delegate.successful_login
-        self.close
-      else
-        # TODO: Present message to user
-        ap "Could not log in"
-      end
-    end
+  def password_field
+    @layout.password_field
   end
 
   def set_title_and_frame

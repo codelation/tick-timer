@@ -41,12 +41,9 @@ module TimerRows
   end
 
   def submit_timer(menu_item)
-    @submit_window = SubmitWindow.alloc.initWithContentRect([[0, 0], [300, 180]],
-                      styleMask: NSTitledWindowMask|NSClosableWindowMask,
-                      backing: NSBackingStoreBuffered,
-                      defer: false)
-    @submit_window.delegate = self
-    @submit_window.timer = menu_item.object
+    @submit_window_controller ||= SubmitWindowController.new
+    @submit_window_controller.timer = menu_item.object
+    @submit_window_controller.showWindow(self)
   end
 
   def successful_submission
@@ -55,7 +52,7 @@ module TimerRows
 
   def toggle_timer(menu_item)
     timer = menu_item.object
-    if timer.is_running
+    if timer.running?
       timer.stop
     else
       timer.start

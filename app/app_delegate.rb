@@ -7,10 +7,7 @@ class AppDelegate
   end
 
   def main_menu
-    @main_menu ||= begin
-      menu = MainMenu.new
-      menu
-    end
+    @main_menu ||= MainMenu.new
   end
 
   def status_item
