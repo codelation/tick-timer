@@ -8,6 +8,7 @@ module SessionActions
   def log_in
     @login_window ||= LoginWindowController.new
     @login_window.showWindow(self)
+    NSApp.activateIgnoringOtherApps(true)
   end
 
   def successful_login

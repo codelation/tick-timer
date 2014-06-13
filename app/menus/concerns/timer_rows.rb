@@ -43,7 +43,9 @@ module TimerRows
   def submit_timer(menu_item)
     @submit_window_controller ||= SubmitWindowController.new
     @submit_window_controller.timer = menu_item.object
+    @submit_window_controller.window.reset
     @submit_window_controller.showWindow(self)
+    NSApp.activateIgnoringOtherApps(true)
   end
 
   def successful_submission

@@ -46,6 +46,10 @@ class LoginLayout < MotionKit::Layout
       right.equals(-10)
       top.equals(:company_label).minus(3)
     end
+
+    deferred do
+      next_key_view email_field
+    end
   end
 
   def email_label_style
@@ -69,6 +73,10 @@ class LoginLayout < MotionKit::Layout
       right.equals(:company_field)
       top.equals(:email_label).minus(3)
     end
+
+    deferred do
+      next_key_view password_field
+    end
   end
 
   def password_label_style
@@ -91,6 +99,10 @@ class LoginLayout < MotionKit::Layout
       height.equals(:email_field)
       right.equals(:email_field)
       top.equals(:password_label).minus(3)
+    end
+
+    deferred do
+      next_key_view company_field
     end
   end
 

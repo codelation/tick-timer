@@ -11,6 +11,9 @@ class LoginWindow < NSWindow
     @layout = LoginLayout.new
     self.contentView = @layout.view
 
+    # Set focus to the company field
+    self.initialFirstResponder = @layout.company_field
+
     @layout.cancel_button.target = self
     @layout.cancel_button.action = :close
 

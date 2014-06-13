@@ -42,7 +42,7 @@ GEM
     menu-motion (0.1.2)
     motion-cocoapods (1.5.0)
       cocoapods (>= 0.32.1)
-    motion-kit (0.10.2)
+    motion-kit (0.10.5)
       dbt (~> 1.1.5)
     motion-tickspot (1.0.10)
       motion-cocoapods (~> 1.4)
