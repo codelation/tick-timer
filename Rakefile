@@ -13,6 +13,11 @@ Motion::Project::App.setup do |app|
   app.name = "Timer for Tick"
   app.icon = "icon.icns"
   app.identifier = "com.codelation.ticktimer"
+  app.short_version = "1.0.0"
+  app.version = app.short_version
+
+  app.codesign_certificate = "3rd Party Mac Developer Application: Argyle Media, Inc. (QZ7NP3GN8S)"
+
   app.info_plist["LSUIElement"] = true
   app.info_plist["NSHumanReadableCopyright"] = "Copyright © 2014 Codelation. All rights reserved."
 end
