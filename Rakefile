@@ -18,6 +18,10 @@ Motion::Project::App.setup do |app|
 
   app.codesign_certificate = "3rd Party Mac Developer Application: Argyle Media, Inc. (QZ7NP3GN8S)"
 
+  # App Store Sandbox
+  app.entitlements["com.apple.security.app-sandbox"] = true
+  app.entitlements["com.apple.security.network.client"] = true
+
   app.info_plist["LSUIElement"] = true
   app.info_plist["NSHumanReadableCopyright"] = "Copyright © 2014 Codelation. All rights reserved."
 end
