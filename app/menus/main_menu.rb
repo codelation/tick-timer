@@ -70,12 +70,20 @@ class MainMenu < MenuMotion::Menu
       else
         build_loading_menu
         Tick::Project.list do |projects|
-          self.projects = projects.select{|project|
-            !project.closed_on
-          }.sort_by{|project|
-            project.name.downcase
-          }
-          build_logged_in_menu
+          if projects.is_a?(NSError)
+            error = projects
+            alert = NSAlert.alertWithError(error)
+            alert.runModal
+            Tick.log_out
+            build_logged_out_menu
+          else
+            self.projects = projects.select{|project|
+              !project.closed_on
+            }.sort_by{|project|
+              project.name.downcase
+            }
+            build_logged_in_menu
+          end
         end
       end
     else

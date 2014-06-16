@@ -18,8 +18,9 @@ class LoginWindowController < NSWindowController
         main_menu.successful_login
         self.close
       else
-        # TODO: Present message to user
-        ap "Could not log in"
+        error = NSError.alloc.initWithDomain("Tick Authentication", code: 401, userInfo: {})
+        alert = NSAlert.alertWithError(error)
+        alert.runModal
       end
     end
   end
