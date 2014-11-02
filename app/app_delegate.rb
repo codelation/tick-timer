@@ -20,12 +20,12 @@ class AppDelegate
 
   def update_status_item
     if Tick::Timer.current && Tick::Timer.current.running?
-      status_item.setImage(NSImage.imageNamed("stopwatch-filled.pdf"))
-      status_item.setAlternateImage(NSImage.imageNamed("stopwatch-filled-alt.pdf"))
+      status_image = NSImage.imageNamed("stopwatch-filled.pdf")
     else
-      status_item.setImage(NSImage.imageNamed("stopwatch.pdf"))
-      status_item.setAlternateImage(NSImage.imageNamed("stopwatch-alt.pdf"))
+      status_image = NSImage.imageNamed("stopwatch.pdf")
     end
+    status_image.setTemplate(true)
+    status_item.setImage(status_image)
   end
 
 end
