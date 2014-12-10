@@ -6,7 +6,7 @@ module RoleRows
       {
         title: role.company,
         tag:   "role-#{role.subscription_id}",
-        rows:  project_rows(role)
+        rows:  client_rows(role)
       }
     }
   end

@@ -10,7 +10,7 @@ module TimerRows
     Tick::Timer.list.sort_by{|timer|
       timer.task.project.name.downcase
     }.map{|timer|
-      title = timer.task.project.name + " - "
+      title =  "#{timer.task.project.client.name} - #{timer.task.project.name} - "
       title += timer.task.name + " - "
       title += timer.paused? ? "Paused" : timer.displayed_time
       {

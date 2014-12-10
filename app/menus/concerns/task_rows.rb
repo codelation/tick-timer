@@ -2,7 +2,6 @@ module TaskRows
 
   def task_rows(project)
     project.tasks.map{|task|
-      task.project = project
       {
         title:  task.name,
         object: task,
