@@ -83,7 +83,22 @@ class MainMenu < MenuMotion::Menu
             self.roles = roles.sort_by{|role|
               role.company.downcase
             }
-            build_logged_in_menu
+
+            self.roles.each do |role|
+              Tick::Session.current.api_token = role.api_token
+              Tick::Session.current.subscription_id = role.subscription_id
+              Tick::Project.list do |projects|
+                role.projects = projects.sort_by{|project| project.name.downcase }
+                role.projects.each_with_index do |project, index|
+                  Tick::Task.list(project_id: project.id) do |tasks|
+                    project.tasks = tasks.sort_by{|task| task.name.downcase }
+                    if index == role.projects.length - 1
+                      self.performSelector("build_logged_in_menu", withObject: nil, afterDelay: 2)
+                    end
+                  end
+                end
+              end
+            end
           end
         end
       end
