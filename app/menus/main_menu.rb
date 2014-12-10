@@ -1,7 +1,9 @@
 class MainMenu < MenuMotion::Menu
   include ActionRows
   include ProjectRows
+  include RoleRows
   include SessionActions
+  include TaskRows
   include TimerRows
 
   def init
@@ -36,7 +38,8 @@ class MainMenu < MenuMotion::Menu
     sections << {
       rows: [{
         title: "Start Timer",
-        rows: project_rows
+        tag:   self.roles.length > 1 ? "start-timer" : "role-#{self.roles.first.subscription_id}",
+        rows:  self.roles.length > 1 ? role_rows : project_rows(self.roles.first)
       }]
     }
 
@@ -63,24 +66,22 @@ class MainMenu < MenuMotion::Menu
   end
 
   def build_menu
-    # TODO: Use MenuMotion tags for better updating
     if Tick.logged_in?
-      if self.projects
+      if self.roles
         build_logged_in_menu
       else
         build_loading_menu
-        Tick::Project.list do |projects|
-          if projects.is_a?(NSError)
-            error = projects
+
+        Tick::Role.list do |roles|
+          if roles.is_a?(NSError)
+            error = roles
             alert = NSAlert.alertWithError(error)
             alert.runModal
             Tick.log_out
             build_logged_out_menu
           else
-            self.projects = projects.select{|project|
-              !project.closed_on
-            }.sort_by{|project|
-              project.name.downcase
+            self.roles = roles.sort_by{|role|
+              role.company.downcase
             }
             build_logged_in_menu
           end

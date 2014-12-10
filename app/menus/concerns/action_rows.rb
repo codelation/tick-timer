@@ -18,7 +18,7 @@ module ActionRows
         target: self,
         action: "show_about_window:"
       }, {
-        title: "Visit #{Tick::Session.current.company}.tickspot.com",
+        title: "Visit www.tickspot.com",
         target: self,
         action: "visit_tickspot"
       }]
@@ -40,7 +40,7 @@ module ActionRows
   end
 
   def visit_tickspot
-    NSWorkspace.sharedWorkspace.openURL(NSURL.URLWithString("https://#{Tick::Session.current.company}.tickspot.com"))
+    NSWorkspace.sharedWorkspace.openURL(NSURL.URLWithString("https://www.tickspot.com"))
   end
 
 end

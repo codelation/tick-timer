@@ -1,7 +1,4 @@
 class LoginLayout < MotionKit::Layout
-  view :company_label
-  view :company_field
-
   view :email_label
   view :email_field
 
@@ -12,9 +9,6 @@ class LoginLayout < MotionKit::Layout
   view :login_button
 
   def layout
-    add NSTextView,  :company_label
-    add NSTextField, :company_field
-
     add NSTextView,  :email_label
     add NSTextField, :email_field
 
@@ -25,11 +19,11 @@ class LoginLayout < MotionKit::Layout
     add NSButton, :login_button
   end
 
-  def company_label_style
+  def email_label_style
     alignment        NSRightTextAlignment
     draws_background false
     editable         false
-    string           "Company:"
+    string           "Email:"
 
     constraints do
       left.equals(10)
@@ -39,38 +33,11 @@ class LoginLayout < MotionKit::Layout
     end
   end
 
-  def company_field_style
-    constraints do
-      left.equals(:company_label).plus(80)
-      height.equals(23)
-      right.equals(-10)
-      top.equals(:company_label).minus(3)
-    end
-
-    deferred do
-      next_key_view email_field
-    end
-  end
-
-  def email_label_style
-    alignment        NSRightTextAlignment
-    draws_background false
-    editable         false
-    string           "Email:"
-
-    constraints do
-      left.equals(:company_label)
-      height.equals(:company_label)
-      top.equals(:company_label).plus(32)
-      width.equals(:company_label)
-    end
-  end
-
   def email_field_style
     constraints do
-      left.equals(:company_field)
-      height.equals(:company_field)
-      right.equals(:company_field)
+      left.equals(:email_label).plus(80)
+      height.equals(23)
+      right.equals(-10)
       top.equals(:email_label).minus(3)
     end
 
@@ -102,7 +69,7 @@ class LoginLayout < MotionKit::Layout
     end
 
     deferred do
-      next_key_view company_field
+      next_key_view email_field
     end
   end
 

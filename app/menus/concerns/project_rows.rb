@@ -1,27 +1,24 @@
 module ProjectRows
-  attr_accessor :projects
 
-  def project_rows
-    self.projects.map{|project|
-      {
-        title: project.name,
-        rows: project.tasks.map{|task|
+  def project_rows(role)
+    Tick::Session.current.api_token = role.api_token
+    Tick::Session.current.subscription_id = role.subscription_id
+
+    Tick::Project.list do |projects|
+      projects = projects.sort_by{|project| project.name.downcase }
+
+      self.update_item_with_tag("role-#{role.subscription_id}", {
+        rows: projects.map{|project|
           {
-            title: task.name,
-            object: task,
-            tag: "task_#{task.id}",
-            target: self,
-            action: "start_timer:"
+            title: project.name,
+            tag:   "project-#{project.id}",
+            rows:  task_rows(role, project)
           }
         }
-      }
-    }
-  end
+      })
+    end
 
-  def start_timer(menu_item)
-    task = menu_item.object
-    timer = Tick::Timer.start_with_task(task)
-    build_menu
+    []
   end
 
 end
